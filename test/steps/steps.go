@@ -1,9 +1,9 @@
-// steps/login_steps.go
 package steps
 
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -21,11 +21,20 @@ type LoginSteps struct {
 func (l *LoginSteps) ILoginWithEmailAndPassword(t *testing.T, email, password string) error {
     // Define o corpo do login
     body := map[string]string{"email": email, "password": password}
+
+    // Exibe o corpo da requisição
+    fmt.Println("Request Body:", body)
+
     // Chama o método correto para login
-    resp, err := l.Service.LoginUser(body) // Certifique-se de usar o método correto para o login
+    resp, err := l.Service.LoginUser(body) 
     if err != nil {
         return err
     }
+
+    // Exibe o código da resposta e o corpo
+    fmt.Println("Response Code:", resp.StatusCode())
+    fmt.Println("Response Body:", string(resp.Body()))
+
     l.ResponseCode = resp.StatusCode()
 
     l.ResponseBody = make(map[string]interface{})

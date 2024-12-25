@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/go-resty/resty/v2"
@@ -22,24 +23,43 @@ func NewAPIService() *APIService {
 }
 
 func (s *APIService) GetAllUsers() (*resty.Response, error) {
-    return s.Client.R().Get(s.BaseURL + config.UsersPath)
+    resp, err := s.Client.R().Get(s.BaseURL + config.UsersPath)
+    fmt.Println("Request URL:", s.BaseURL+config.UsersPath)
+    fmt.Println("Response Status Code:", resp.StatusCode())
+    fmt.Println("Response Body:", string(resp.Body()))
+    return resp, err
 }
 
 func (s *APIService) GetSingleUser(userID int) (*resty.Response, error) {
-    return s.Client.R().Get(s.BaseURL + config.SingleUserPath + strconv.Itoa(userID))
+    url := s.BaseURL + config.SingleUserPath + strconv.Itoa(userID)
+    resp, err := s.Client.R().Get(url)
+    fmt.Println("Request URL:", url)
+    fmt.Println("Response Status Code:", resp.StatusCode())
+    fmt.Println("Response Body:", string(resp.Body()))
+    return resp, err
 }
 
 func (s *APIService) CreateUser(body interface{}) (*resty.Response, error) {
-    return s.Client.R().
+    fmt.Println("Request Body:", body)
+    resp, err := s.Client.R().
         SetHeader("Content-Type", "application/json").
         SetBody(body).
         Post(s.BaseURL + config.UsersPath)
+    fmt.Println("Request URL:", s.BaseURL+config.UsersPath)
+    fmt.Println("Response Status Code:", resp.StatusCode())
+    fmt.Println("Response Body:", string(resp.Body()))
+    return resp, err
 }
 
 // Adicione o método LoginUser para testar a funcionalidade de login
 func (s *APIService) LoginUser(body interface{}) (*resty.Response, error) {
-    return s.Client.R().
+    fmt.Println("Request Body:", body) // Exibe o corpo da requisição
+    resp, err := s.Client.R().
         SetHeader("Content-Type", "application/json").
         SetBody(body).
         Post(s.BaseURL + config.LoginPath)
+    fmt.Println("Request URL:", s.BaseURL+config.LoginPath)
+    fmt.Println("Response Status Code:", resp.StatusCode())
+    fmt.Println("Response Body:", string(resp.Body())) // Exibe o corpo da resposta
+    return resp, err
 }

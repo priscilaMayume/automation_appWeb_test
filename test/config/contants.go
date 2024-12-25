@@ -5,5 +5,5 @@ const (
     BaseURL        = "https://reqres.in/api"
     UsersPath      = "/users"
     SingleUserPath = "/users/"
-    LoginPath      = "/login"  // Verifique se está correto
+    LoginPath      = "/login" 
 )
